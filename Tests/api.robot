@@ -14,10 +14,10 @@ Test connection
 
 Post a new object
 	${headers}      Create Dictionary    Content-Type=application/json
+    Set Suite Variable  ${HEADERS}  ${headers}
 	${body}         Create Dictionary    name=My name
-	${response}     POST    ${BASE_URL}   headers=${headers}  json=${body}
+	${response}     POST    ${BASE_URL}   headers=${HEADERS}  json=${body}
 	Log To Console      ${response.json()}[id]
-	Set Suite Variable  ${HEADERS}  ${headers}
 	Set Suite Variable  ${ID}  ${response.json()}[id]
 
 Partially Update an object
