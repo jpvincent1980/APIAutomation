@@ -41,6 +41,6 @@ Delete an object
 	${response}     DELETE   ${BASE_URL}/${ID}  expected_status=200
 
 Try to delete same object
+	# This test case is executed only if the previous one passes
 	# Should return a status code 404 as item has already been deleted
-	${response}     DELETE   ${BASE_URL}/${ID}  expected_status=404
-
+	Run Keyword If    "${PREV TEST STATUS}" == "PASS"     DELETE   ${BASE_URL}/${ID}  expected_status=404
