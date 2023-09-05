@@ -19,24 +19,24 @@ Post a new object
 	${headers}      Create Dictionary    Content-Type=application/json
     Set Suite Variable  ${HEADERS}  ${headers}
 	${body}         Create Dictionary    name=${first_name}
-	${response}     POST    ${BASE_URL}   headers=${HEADERS}  json=${body}
+	${response}     POST    ${BASE_URL}   headers=${HEADERS}  json=${body}  expected_status=200
 	Set Suite Variable  ${ID}  ${response.json()}[id]
 	Should Be Equal     ${response.json()}[name]  ${first_name}
 	Should Be Equal     ${response.json()}[data]    ${None}
 
 Partially Update an object
 	${body}         Create Dictionary    name=${second_name}
-	${response}     PATCH    ${BASE_URL}/${ID}  headers=${HEADERS}  json=${body}
+	${response}     PATCH    ${BASE_URL}/${ID}  headers=${HEADERS}  json=${body}  expected_status=200
 	Should Be Equal     ${response.json()}[name]  ${second_name}
     Should Be Equal     ${response.json()}[data]    ${None}
 
 Update an object
 	${data}     Create Dictionary    color=white  size=medium
 	${body}         Create Dictionary    name=${third_name}  data=${data}
-	${response}     PUT      ${BASE_URL}/${ID}  headers=${HEADERS}  json=${body}
+	${response}     PUT      ${BASE_URL}/${ID}  headers=${HEADERS}  json=${body}  expected_status=200
 	Should Be Equal     ${response.json()}[name]  ${third_name}
     Should Be Equal     ${response.json()}[data]    ${data}
 
 Delete an object
-	${response}     DELETE   ${BASE_URL}/${ID}
+	${response}     DELETE   ${BASE_URL}/${ID}  expected_status=200
 	Log To Console    ${response.json()}[message]
