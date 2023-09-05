@@ -39,4 +39,8 @@ Update an object
 
 Delete an object
 	${response}     DELETE   ${BASE_URL}/${ID}  expected_status=200
-	Log To Console    ${response.json()}[message]
+
+Try to delete same object
+	# Should return a status code 404 as item has already been deleted
+	${response}     DELETE   ${BASE_URL}/${ID}  expected_status=404
+
