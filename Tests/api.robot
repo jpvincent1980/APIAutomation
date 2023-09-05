@@ -12,8 +12,10 @@ ${third_name}   Another new name
 
 
 *** Test Cases ***
-Test connection
+Get all data
 	${response}     GET    ${BASE_URL}  expected_status=200
+	# Display in the console the very last item from the list
+	Log To Console    ${response.json()}[-1]
 
 Post a new object
 	${headers}      Create Dictionary    Content-Type=application/json
