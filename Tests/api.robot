@@ -14,8 +14,6 @@ ${third_name}   Another new name
 *** Test Cases ***
 Get all data
 	${response}     GET    ${BASE_URL}  expected_status=200
-	# Display in the console the very last item from the list
-	Log To Console    ${response.json()}[-1]
 
 Post a new object
 	${headers}      Create Dictionary    Content-Type=application/json
@@ -33,10 +31,11 @@ Partially Update an object
     Should Be Equal     ${response.json()}[data]    ${None}
 
 Update an object
-	${body}         Create Dictionary    name=${third_name}
+	${data}     Create Dictionary    color=white  size=medium
+	${body}         Create Dictionary    name=${third_name}  data=${data}
 	${response}     PUT      ${BASE_URL}/${ID}  headers=${HEADERS}  json=${body}
 	Should Be Equal     ${response.json()}[name]  ${third_name}
-    Should Be Equal     ${response.json()}[data]    ${None}
+    Should Be Equal     ${response.json()}[data]    ${data}
 
 Delete an object
 	${response}     DELETE   ${BASE_URL}/${ID}
