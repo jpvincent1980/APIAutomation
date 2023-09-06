@@ -13,9 +13,13 @@ ${third_name}   Another new name
 
 *** Test Cases ***
 Get all data
+	[Documentation]  Response should return a 200 status code
 	${response}     GET    ${BASE_URL}  expected_status=200
 
 Post a new object
+	[Documentation]  Response should return a 200 status code
+    ...              Checks that value of "name" has been set accordingly
+    ...              and value of "data" is null
 	${headers}      Create Dictionary    Content-Type=application/json
     Set Suite Variable  ${HEADERS}  ${headers}
 	${body}         Create Dictionary    name=${first_name}
@@ -25,12 +29,18 @@ Post a new object
 	Should Be Equal     ${response.json()}[data]    ${None}
 
 Partially Update an object
+	[Documentation]  Response should return a 200 status code
+    ...              Checks that value of "name" has been updated accordingly
+    ...              and value of "data" is still null
 	${body}         Create Dictionary    name=${second_name}
 	${response}     PATCH    ${BASE_URL}/${ID}  headers=${HEADERS}  json=${body}  expected_status=200
 	Should Be Equal     ${response.json()}[name]  ${second_name}
     Should Be Equal     ${response.json()}[data]    ${None}
 
 Update an object
+	[Documentation]  Response should return a 200 status code
+	...              Checks that values of "name" and "data" keys have been
+	...              updated accordingly
 	${data}     Create Dictionary    color=white  size=medium
 	${body}         Create Dictionary    name=${third_name}  data=${data}
 	${response}     PUT      ${BASE_URL}/${ID}  headers=${HEADERS}  json=${body}  expected_status=200
@@ -38,9 +48,16 @@ Update an object
     Should Be Equal     ${response.json()}[data]    ${data}
 
 Delete an object
+	[Documentation]  Response should return a 200 status code
 	${response}     DELETE   ${BASE_URL}/${ID}  expected_status=200
 
 Try to delete same object
-	# This test case is executed only if the previous one passes
-	# Should return a status code 404 as item has already been deleted
+	[Documentation]  This test case is executed only if the previous one passes
+	...              Response should return a status code 404 as item has
+	...              already been deleted
 	Run Keyword If    "${PREV TEST STATUS}" == "PASS"     DELETE   ${BASE_URL}/${ID}  expected_status=404
+
+Get deleted object
+	[Documentation]  Response should return a 404 status code as object has been
+	...              deleted
+	${response}     GET    ${BASE_URL}${ID}  expected_status=404
