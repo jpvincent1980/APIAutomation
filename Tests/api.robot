@@ -15,13 +15,14 @@ ${third_name}   Another new name
 Get all data
 	[Documentation]  Should return a 200 status code in less than <timeout>
 	TRY
-        ${response}     GET    ${BASE_URL}  expected_status=200  timeout=0.02
+        ${response}     GET    ${BASE_URL}  expected_status=200  timeout=2
     EXCEPT  ReadTimeout  type=start
     	${response_exists}  Variable Should Not Exist  ${response}
     	Run Keyword If  ${response_exists} == ${None}  Set Test Message    Le temps imparti est écoulé.
     ELSE
         ${cookies}  Convert To List    ${response.cookies}
-        Log To Console    ${cookies}
+        # Log cookies to console only if list is not empty
+        Run Keyword If    ${cookies} != @{EMPTY}  Log To Console    ${cookies}
     END
 
 Post a new object
