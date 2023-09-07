@@ -67,6 +67,6 @@ Try to delete same object
 	Run Keyword If    "${PREV TEST STATUS}" == "PASS"     DELETE   ${BASE_URL}/${ID}  expected_status=404
 
 Get deleted object
-	[Documentation]  Response should return a 404 status code as object has been
-	...              deleted
+	[Documentation]  Response should return a 404 status code as object has
+	...              already been deleted
 	${response}     GET    ${BASE_URL}${ID}  expected_status=404
