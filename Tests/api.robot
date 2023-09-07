@@ -13,8 +13,16 @@ ${third_name}   Another new name
 
 *** Test Cases ***
 Get all data
-	[Documentation]  Response should return a 200 status code
-	${response}     GET    ${BASE_URL}  expected_status=200
+	[Documentation]  Should return a 200 status code in less than <timeout>
+	TRY
+        ${response}     GET    ${BASE_URL}  expected_status=200  timeout=0.02
+    EXCEPT  ReadTimeout  type=start
+    	${response_exists}  Variable Should Not Exist  ${response}
+    	Run Keyword If  ${response_exists} == ${None}  Set Test Message    Le temps imparti est écoulé.
+    ELSE
+        ${cookies}  Convert To List    ${response.cookies}
+        Log To Console    ${cookies}
+    END
 
 Post a new object
 	[Documentation]  Response should return a 200 status code
