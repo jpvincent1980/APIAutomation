@@ -10,8 +10,10 @@ ${BASE_URL}         https://api.restful-api.dev/objects
 &{headers}          Content-Type=application/json
 &{payload_post}     name=${FIRST_NAME}
 &{payload_patch}    name=${SECOND_NAME}
-&{data}             color=white  size=medium
-&{payload_put}      name=${THIRD_NAME}  data=${data}
+&{data}             color=white
+...                 size=medium
+&{payload_put}      name=${THIRD_NAME}
+...                 data=${data}
 
 
 *** Test Cases ***
